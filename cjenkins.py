@@ -8,11 +8,8 @@ import time
 def createHeader():
 
 	header = "Curses Jenkins"
-
-	#spaceLength = " " * ((y-14)/2)
-	#header = spaceLength + header + spaceLength;
-
 	headerPos = (y/2) - 7
+
 	myscreen.addstr(0, headerPos, header,curses.color_pair(1))
 
 def init():	
@@ -20,7 +17,12 @@ def init():
 
 	myscreen = curses.initscr()
 	myscreen.border(0)
+
 	x,y = myscreen.getmaxyx();
+
+	defineColors();
+	
+def defineColors():
 	curses.start_color()
 	curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
 	curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
@@ -28,8 +30,6 @@ def init():
 	curses.init_pair(4, curses.COLOR_CYAN, curses.COLOR_BLACK)
 	curses.init_pair(5, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 	curses.init_pair(6, curses.COLOR_RED, curses.COLOR_BLACK)
-	
-
 
 def displayGui():
 
@@ -40,16 +40,12 @@ def displayGui():
 		readData(count)
 		myscreen.refresh()
 
-		
-
 		if count < 5:
 			count += 1
 		else:
 			count = 1
 
 		time.sleep(1)
-
-
 
 def readData(count):
 
