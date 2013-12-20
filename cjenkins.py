@@ -54,7 +54,7 @@ def displayGui():
 def readData(count):
 
 	row = 4
-	data = eval(urllib.urlopen("").read());
+	data = eval(urllib.urlopen(str(sys.argv[1]) + "/api/python?depth=1&pretty=true").read());
 
 	myscreen.addstr(2, 2, data["description"], curses.color_pair(1))
 
@@ -107,6 +107,10 @@ def getColorCode(color):
 		return 6
 
 
+if len(sys.argv) != 2:
+	print("ERROR: Wrong nr of parameter")
+	print("  Usage: ./cjenkins.py <pathToJenkins>")
+	exit(1)
 
 init();
 displayGui()
