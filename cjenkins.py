@@ -27,26 +27,44 @@ def init():
 
 
 def displayGui():
+
+	count = 1
+
 	while 1:
 		createHeader()
-		readData()
+		readData(count)
 		myscreen.refresh()
+
+		
+
+		if count < 5:
+			count += 1
+		else:
+			count = 1
 
 		time.sleep(1)
 
 
 
-def readData():
+def readData(count):
 
 	row = 2
-	data = eval(urllib.urlopen("http://jenkins.sendregning.no:8090/api/python?pretty=true").read());
+	data = eval(urllib.urlopen("").read());
 
 	for current in data["jobs"]:
 
 		nameToDisplay = current["name"].strip();
 		myscreen.addstr(row, 2, nameToDisplay, curses.color_pair(2))
-		myscreen.addstr(row, 30, "||||||||", curses.color_pair(3))
+		animation = createAnimation(count);
+		myscreen.addstr(row, 30, animation, curses.color_pair(3))
 		row += 1
+
+def createAnimation(count):
+	result = "|" * count
+	space = " " * (5-count)
+	result = result+space
+	return result
+
 
 
 init();
