@@ -1,4 +1,4 @@
 CJenkins
 =======
 
-![alt tag](https://github.com/mariushe/cjenkins/cjenkins/cjenkins.png)
+![](https://raw.github.com/mariushe/cjenkins/master/cjenkins.png)
