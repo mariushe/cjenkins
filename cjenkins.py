@@ -35,17 +35,23 @@ def displayGui():
 
 	count = 1
 
-	while 1:
-		createHeader()
-		readData(count)
-		myscreen.refresh()
+	try:
+		while 1:
+			createHeader()
+			readData(count)
+			myscreen.refresh()
 
-		if count < 5:
-			count += 1
-		else:
-			count = 1
+			if count < 5:
+				count += 1
+			else:
+				count = 1
 
-		time.sleep(1)
+			time.sleep(1)
+	except (KeyboardInterrupt, SystemExit):
+		curses.endwin()
+		sys.exit(0)
+
+
 
 def readData(count):
 
