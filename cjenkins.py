@@ -17,6 +17,7 @@ def init():
 
 	myscreen = curses.initscr()
 	myscreen.border(0)
+	curses.curs_set(0);
 
 	y,x = myscreen.getmaxyx();
 
@@ -71,6 +72,7 @@ def readData(count):
 		myscreen.addstr(row, 58, current["healthReport"][0]["description"], curses.color_pair(4))
 		addAnimation(count, row, nameToDisplay, color)
 		createStatus(row, color)
+		addQuitInstructions(y)
 
 		
 		row += 1
@@ -98,6 +100,9 @@ def createAnimation(count):
 	space = " " * (5-count)
 	result = result+space
 	return result
+
+def addQuitInstructions(y):
+	myscreen.addstr(y-2, 2, "To quit, press ctrl+C")
 
 def createStatus(y, color):
 	if "blue" in color:
