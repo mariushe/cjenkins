@@ -8,7 +8,7 @@ import time
 def createHeader():
 
 	header = "Curses Jenkins"
-	headerPos = (y/2) - 7
+	headerPos = (x/2) - 7
 
 	myscreen.addstr(0, headerPos, header,curses.color_pair(1))
 
