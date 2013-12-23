@@ -18,7 +18,7 @@ def init():
 	myscreen = curses.initscr()
 	myscreen.border(0)
 
-	x,y = myscreen.getmaxyx();
+	y,x = myscreen.getmaxyx();
 
 	defineColors();
 	
@@ -58,7 +58,7 @@ def readData(count):
 	row = 4
 	data = eval(urllib.urlopen(str(sys.argv[1]) + "/api/python?depth=1&pretty=true").read());
 
-	myscreen.addstr(2, 2, data["description"], curses.color_pair(1))
+	addDescription(data["description"])
 
 	for current in data["jobs"]:
 
@@ -74,6 +74,17 @@ def readData(count):
 
 		
 		row += 1
+def addDescription(description):
+
+	# We just allow 1 line of description
+	description = description.split('\n')[0]
+
+	# If description is to long, cut of parts of the end
+	if (x-2) < len(description):
+		description = description[:(x-10)]
+		description += " (...)"
+
+	myscreen.addstr(2, 2, description, curses.color_pair(1))
 
 def addAnimation(count, row, nameToDisplay, color):
 	if "anime" in color:
