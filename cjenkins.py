@@ -66,16 +66,25 @@ def readData(count):
 		nameToDisplay = current["name"].strip();
 		color = current["color"].strip();
 		colorCode = getColorCode(color);
+
+		addHealthReport(current, row)
+
 		myscreen.addstr(row, 16, nameToDisplay, curses.color_pair(colorCode))
+
 		myscreen.addstr(row, 49, "|", curses.color_pair(1))
 		myscreen.addstr(row, 56, "|", curses.color_pair(1))
-		myscreen.addstr(row, 58, current["healthReport"][0]["description"], curses.color_pair(4))
+		
 		addAnimation(count, row, nameToDisplay, color)
 		createStatus(row, color)
 		addQuitInstructions(y)
 
 		
 		row += 1
+
+def addHealthReport(current, row):
+	if x > 119:	
+		myscreen.addstr(row, 58, current["healthReport"][0]["description"], curses.color_pair(4))
+
 def addDescription(description):
 
 	# We just allow 1 line of description
