@@ -7,6 +7,6 @@ CJenkins
 I recommend to create an alias for cjenkins.
 
 Here is an example:
-`alias cjenkins=/<path>/cjenkins <url to jenkins>`
+`alias cjenkins=/<path>/cjenkins.py <url to jenkins>`
 
 ![](https://raw.github.com/mariushe/cjenkins/master/cjenkins.png)
