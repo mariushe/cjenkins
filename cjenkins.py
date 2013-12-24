@@ -83,6 +83,7 @@ def readData(count):
 
 def addHealthReport(current, row):
 	if x > 119:	
+		myscreen.addstr(row, 58, " " * (x-59), curses.color_pair(4))
 		myscreen.addstr(row, 58, current["healthReport"][0]["description"], curses.color_pair(4))
 
 def addDescription(description):
