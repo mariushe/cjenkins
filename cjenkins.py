@@ -1,5 +1,7 @@
 #! /usr/bin/env python
 
+# Jenkins monitor in terminal based on the curses library
+
 import curses
 import urllib
 import sys
@@ -13,6 +15,7 @@ def createHeader():
 	myscreen.addstr(0, headerPos, header,curses.color_pair(1))
 
 def init():	
+
 	global myscreen, x, y
 
 	myscreen = curses.initscr()
@@ -24,6 +27,7 @@ def init():
 	defineColors();
 	
 def defineColors():
+
 	curses.start_color()
 	curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
 	curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
@@ -38,6 +42,7 @@ def displayGui():
 
 	try:
 		while 1:
+
 			createHeader()
 			readData(count)
 			myscreen.refresh()
@@ -48,6 +53,7 @@ def displayGui():
 				count = 1
 
 			time.sleep(1)
+
 	except (KeyboardInterrupt, SystemExit):
 		curses.endwin()
 		sys.exit(0)
@@ -71,18 +77,25 @@ def readData(count):
 
 		myscreen.addstr(row, 16, nameToDisplay, curses.color_pair(colorCode))
 
-		myscreen.addstr(row, 49, "|", curses.color_pair(1))
-		myscreen.addstr(row, 56, "|", curses.color_pair(1))
+		addStructure(row)
 		
-		addAnimation(count, row, nameToDisplay, color)
-		createStatus(row, color)
-		addQuitInstructions(y)
+		addProgressBar(count, row, nameToDisplay, color)
 
+		createStatus(row, color)
+
+		addQuitInstructions(y)
 		
 		row += 1
 
+def addStructure(row):
+
+		myscreen.addstr(row, 49, "|", curses.color_pair(1))
+		myscreen.addstr(row, 56, "|", curses.color_pair(1))
+
 def addHealthReport(current, row):
+
 	if x > 119:	
+
 		myscreen.addstr(row, 58, " " * (x-59), curses.color_pair(4))
 		myscreen.addstr(row, 58, current["healthReport"][0]["description"], curses.color_pair(4))
 
@@ -98,14 +111,16 @@ def addDescription(description):
 
 	myscreen.addstr(2, 2, description, curses.color_pair(1))
 
-def addAnimation(count, row, nameToDisplay, color):
+def addProgressBar(count, row, nameToDisplay, color):
+
 	if "anime" in color:
-		animation = createAnimation(count);
-		myscreen.addstr(row, 50, animation, curses.color_pair(3))
+		progressBar = createProgressBar(count);
+		myscreen.addstr(row, 50, progressBar, curses.color_pair(3))
 	else:
 		myscreen.addstr(row, 50, " " * 5, curses.color_pair(3))
 
-def createAnimation(count):
+def createProgressBar(count):
+
 	result = "|" * count
 	space = " " * (5-count)
 	result = result+space
@@ -115,6 +130,7 @@ def addQuitInstructions(y):
 	myscreen.addstr(y-2, 2, "To quit, press ctrl+C")
 
 def createStatus(y, color):
+
 	if "blue" in color:
 		myscreen.addstr(y, 2, "      [ OK ]", curses.color_pair(2))
 	elif "disabled" in color:
@@ -125,6 +141,7 @@ def createStatus(y, color):
 		myscreen.addstr(y, 2, "  [ FAILED ]", curses.color_pair(6))
 
 def getColorCode(color):
+	
 	if "blue" in color:
 		return 2
 	elif "disabled" in color:
@@ -141,6 +158,7 @@ if len(sys.argv) != 2:
 	exit(1)
 
 init();
+
 displayGui()
 	
 curses.endwin()
