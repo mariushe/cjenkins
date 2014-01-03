@@ -89,8 +89,8 @@ def readData(count):
 
 def addStructure(row):
 
-		myscreen.addstr(row, 49, "|", curses.color_pair(1))
-		myscreen.addstr(row, 56, "|", curses.color_pair(1))
+		myscreen.addstr(row, 49, "[", curses.color_pair(1))
+		myscreen.addstr(row, 56, "]", curses.color_pair(1))
 
 def addHealthReport(current, row):
 
