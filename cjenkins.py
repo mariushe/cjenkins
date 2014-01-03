@@ -47,7 +47,7 @@ def displayGui():
 			readData(count)
 			myscreen.refresh()
 
-			if count < 5:
+			if count < 6:
 				count += 1
 			else:
 				count = 1
@@ -116,12 +116,12 @@ def addProgressBar(count, row, nameToDisplay, color):
 		progressBar = createProgressBar(count);
 		myscreen.addstr(row, 50, progressBar, curses.color_pair(3))
 	else:
-		myscreen.addstr(row, 50, " " * 5, curses.color_pair(3))
+		myscreen.addstr(row, 50, " " * 6, curses.color_pair(3))
 
 def createProgressBar(count):
 
 	result = "|" * count
-	space = " " * (5-count)
+	space = " " * (6-count)
 	result = result+space
 	return result
 
