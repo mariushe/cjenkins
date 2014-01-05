@@ -74,7 +74,6 @@ def displayGui():
 		sys.exit(0)
 
 
-
 def readData(count, argumentNr, row):
 
 	data = eval(urllib.urlopen(str(sys.argv[argumentNr]) + "/api/python?depth=1&pretty=true").read());
