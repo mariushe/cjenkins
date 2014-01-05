@@ -43,8 +43,23 @@ def displayGui():
 	try:
 		while 1:
 
+			row = 1
+
 			createHeader()
-			readData(count)
+
+			argumentNr = 1
+
+			while argumentNr < len(sys.argv):
+				
+				row = readData(count, argumentNr, row)
+
+				if argumentNr < (len(sys.argv)-1):
+					myscreen.addstr(row, 1, "-" * (x-2))
+					row += 1
+
+				argumentNr += 1
+
+
 			myscreen.refresh()
 
 			if count < 6:
@@ -54,20 +69,28 @@ def displayGui():
 
 			time.sleep(1)
 
-	except (KeyboardInterrupt, SystemExit):
+	except (KeyboardInterrupt, SystemExit, Exception):
 		curses.endwin()
 		sys.exit(0)
 
 
 
-def readData(count):
+def readData(count, argumentNr, row):
 
-	row = 4
-	data = eval(urllib.urlopen(str(sys.argv[1]) + "/api/python?depth=1&pretty=true").read());
+	data = eval(urllib.urlopen(str(sys.argv[argumentNr]) + "/api/python?depth=1&pretty=true").read());
 
-	addDescription(data["description"])
+	row += 1
+
+	if windowToSmallToWriteIn(row):
+		return row;
+	
+	addDescription(data["description"], row);
+	row += 2
 
 	for current in data["jobs"]:
+
+		if windowToSmallToWriteIn(row):
+			break;
 
 		nameToDisplay = current["name"].strip();
 		color = current["color"].strip();
@@ -87,6 +110,9 @@ def readData(count):
 		
 		row += 1
 
+	row += 1;
+	return row
+
 def addStructure(row):
 
 		myscreen.addstr(row, 49, "[", curses.color_pair(1))
@@ -98,7 +124,7 @@ def addHealthReport(current, row):
 		myscreen.addstr(row, 58, " " * (x-59), curses.color_pair(4))
 		myscreen.addstr(row, 58, current["healthReport"][0]["description"], curses.color_pair(4))
 
-def addDescription(description):
+def addDescription(description, row):
 
 	# We just allow 1 line of description
 	description = description.split('\n')[0]
@@ -108,7 +134,7 @@ def addDescription(description):
 		description = description[:(x-10)]
 		description += " (...)"
 
-	myscreen.addstr(2, 2, description, curses.color_pair(1))
+	myscreen.addstr(row, 2, description, curses.color_pair(1))
 
 def addProgressBar(count, row, nameToDisplay, color):
 
@@ -127,6 +153,17 @@ def createProgressBar(count):
 
 def addQuitInstructions(y):
 	myscreen.addstr(y-2, 2, "To quit, press ctrl+C")
+
+def windowToSmallToWriteIn(row):
+
+	if row >= (y-3):
+			if x > 50:
+				myscreen.addstr(y-2, 23, " (Can't show all data. To small window)", curses.color_pair(6))
+			else:
+				myscreen.addstr(y-3, 2, "(Can't show all data. To small window)", curses.color_pair(6))
+			return 1
+
+	return 0
 
 def createStatus(y, color):
 
@@ -151,7 +188,7 @@ def getColorCode(color):
 		return 6
 
 
-if len(sys.argv) != 2:
+if len(sys.argv) < 2:
 	print("ERROR: Wrong nr of parameter")
 	print("  Usage: ./cjenkins.py <pathToJenkins>")
 	exit(1)
