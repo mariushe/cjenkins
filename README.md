@@ -13,3 +13,6 @@ Here is an example:
 Now you can add several jenkins' as arguments. That way you can get all your jenkins' in one window!
 
 ![](https://raw.github.com/mariushe/cjenkins/master/cjenkins.png)
+
+cJenkins with several jenkins':
+![](https://raw.github.com/mariushe/cjenkins/master/cjenkinsWithSeveralJenkins.png)
