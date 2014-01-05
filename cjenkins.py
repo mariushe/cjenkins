@@ -159,7 +159,3 @@ if len(sys.argv) != 2:
 init();
 
 displayGui()
-	
-curses.endwin()
-
-readData();
