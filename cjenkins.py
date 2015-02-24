@@ -1,6 +1,7 @@
 #! /usr/bin/env python
 
 # Jenkins monitor in terminal based on the curses library
+# Author: Marius Herring
 
 import curses
 import urllib
