@@ -7,7 +7,7 @@ import curses
 import urllib
 import sys
 import time
-
+import traceback
 def createHeader():
 
 	header = "Curses Jenkins"
@@ -72,6 +72,7 @@ def displayGui():
 
 	except (KeyboardInterrupt, SystemExit, Exception):
 		curses.endwin()
+                print traceback.format_exc()
 		sys.exit(0)
 
 
