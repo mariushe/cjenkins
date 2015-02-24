@@ -2,12 +2,12 @@ CJenkins
 =======
 
 ##### How run: 
-`python cjenkins "<jenkins address>"`
+`python cjenkins <jenkins address>`
 
 I recommend to create an alias for cjenkins.
 
 Here is an example:
-`alias cjenkins=/<path>/cjenkins.py "<url to jenkins>"`
+`alias cjenkins="/<path>/cjenkins.py <url to jenkins>"`
 
 ##### Update:
 Now you can add several jenkins' as arguments. That way you can get all your jenkins' in one window!
