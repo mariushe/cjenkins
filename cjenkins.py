@@ -15,7 +15,7 @@ def createHeader():
 
 	myscreen.addstr(0, headerPos, header,curses.color_pair(1))
 
-def init():	
+def init():
 
 	global myscreen, x, y
 
@@ -26,7 +26,7 @@ def init():
 	y,x = myscreen.getmaxyx();
 
 	defineColors();
-	
+
 def defineColors():
 
 	curses.start_color()
@@ -51,7 +51,7 @@ def displayGui():
 			argumentNr = 1
 
 			while argumentNr < len(sys.argv):
-				
+
 				row = readData(count, argumentNr, row)
 
 				if argumentNr < (len(sys.argv)-1):
@@ -59,7 +59,6 @@ def displayGui():
 					row += 1
 
 				argumentNr += 1
-
 
 			myscreen.refresh()
 
@@ -70,10 +69,14 @@ def displayGui():
 
 			time.sleep(1)
 
-	except (KeyboardInterrupt, SystemExit, Exception):
+	except (SystemExit, Exception):
 		curses.endwin()
-                print traceback.format_exc()
+		print traceback.format_exc()
 		sys.exit(0)
+	except (KeyboardInterrupt):
+		curses.endwin()
+		sys.exit(0)
+
 
 
 def readData(count, argumentNr, row):
@@ -84,7 +87,7 @@ def readData(count, argumentNr, row):
 
 	if windowToSmallToWriteIn(row):
 		return row;
-	
+
 	addDescription(data["description"], row);
 	row += 2
 
@@ -102,35 +105,35 @@ def readData(count, argumentNr, row):
 		myscreen.addstr(row, 16, nameToDisplay, curses.color_pair(colorCode))
 
 		addStructure(row)
-		
+
 		addProgressBar(count, row, nameToDisplay, color)
 
 		createStatus(row, color)
 
 		addQuitInstructions(y)
-		
+
 		row += 1
 
 	row += 1;
 	return row
 
 def addStructure(row):
-
-		myscreen.addstr(row, 49, "[", curses.color_pair(1))
-		myscreen.addstr(row, 56, "]", curses.color_pair(1))
+	myscreen.addstr(row, 49, "[", curses.color_pair(1))
+	myscreen.addstr(row, 56, "]", curses.color_pair(1))
 
 def addHealthReport(current, row):
 
-	if x > 119:	
+	if x > 119:
 		myscreen.addstr(row, 58, " " * (x-59), curses.color_pair(4))
 		myscreen.addstr(row, 58, current["healthReport"][0]["description"], curses.color_pair(4))
 
 def addDescription(description, row):
 
-	# We just allow 1 line of description
-        if description is None:
-            description = "Jenkins"
+	# Set standard description if jenkins doesn't have any
+	if description is None:
+		description = "Jenkins"
 
+	# We just allow 1 line of description
 	description = description.split('\n')[0]
 
 	# If description is to long, cut of parts of the end
@@ -161,11 +164,11 @@ def addQuitInstructions(y):
 def windowToSmallToWriteIn(row):
 
 	if row >= (y-3):
-			if x > 50:
-				myscreen.addstr(y-2, 23, " (Can't show all data. To small window)", curses.color_pair(6))
-			else:
-				myscreen.addstr(y-3, 2, "(Can't show all data. To small window)", curses.color_pair(6))
-			return 1
+		if x > 50:
+			myscreen.addstr(y-2, 23, " (Can't show all data. To small window)", curses.color_pair(6))
+		else:
+			myscreen.addstr(y-3, 2, "(Can't show all data. To small window)", curses.color_pair(6))
+		return 1
 
 	return 0
 
