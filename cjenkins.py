@@ -7,7 +7,7 @@ import curses
 import urllib
 import sys
 import time
-
+import traceback
 def createHeader():
 
 	header = "Curses Jenkins"
@@ -72,6 +72,7 @@ def displayGui():
 
 	except (KeyboardInterrupt, SystemExit, Exception):
 		curses.endwin()
+                print traceback.format_exc()
 		sys.exit(0)
 
 
@@ -127,6 +128,9 @@ def addHealthReport(current, row):
 def addDescription(description, row):
 
 	# We just allow 1 line of description
+        if description is None:
+            description = "Jenkins"
+
 	description = description.split('\n')[0]
 
 	# If description is to long, cut of parts of the end
