@@ -1,18 +1,31 @@
 CJenkins
 =======
+CJenkins is a jenkins GUI in the terminal. It displays jobs and their status. You can also enter interactive mode where you can build the different jobs.
 
-##### How run: 
-`python cjenkins <jenkins address>`
+![](https://raw.github.com/mariushe/cjenkins/master/cjenkins.png)
+
+#### How run:
+`python cjenkins <username> <password> <jenkins address>`
+
+#### Commands:
+* `ctrl + c` to enter interactive mode
+##### When in interactive mode
+* `ctrl + c` to quit
+* `w` to move up
+* `s` to move down
+* `b` build marked job
+* `m` go back to monitor mode
 
 I recommend to create an alias for cjenkins.
 
 Here is an example:
 `alias cjenkins="/<path>/cjenkins.py <url to jenkins>"`
 
-##### Update:
+#### Update:
 Now you can add several jenkins' as arguments. That way you can get all your jenkins' in one window!
 
-![](https://raw.github.com/mariushe/cjenkins/master/cjenkins.png)
+#####CJenkins' interactive mode:
+![](https://raw.github.com/mariushe/cjenkins/master/interactivemode.png)
 
-cJenkins with several jenkins':
+#####CJenkins with several jenkins':
 ![](https://raw.github.com/mariushe/cjenkins/master/cjenkinsWithSeveralJenkins.png)
