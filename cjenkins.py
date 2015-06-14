@@ -85,30 +85,24 @@ def displayGui():
 		interactiveLoop()
 
 def interactiveLoop():
-	focusRow = 4
+
 	try:
+		focusRow = 4
 		myscreen.nodelay(1)
 		drawScreen(1,focusRow)
 		while 1:
 			c = myscreen.getch()
-			q = c
 			if c == ord('w'):
-				if focusRow > 4:
-					focusRow = focusRow - 1
-					drawScreen(1,focusRow)
+				focusRow = findPrevRowToFocus(focusRow)
+				drawScreen(1,focusRow)
 			if c == ord('s'):
-				if focusRow < y-1:
-					focusRow = focusRow + 1
-					drawScreen(1,focusRow)
+				focusRow = findNextRowToFocus(focusRow)
+				drawScreen(1,focusRow)
 			if c == ord('m'):
-				displayGui()
-				curses.endwin()
-				sys.exit(0)
+				switchToMonitor()
 			if c == ord('b'):
 				build(focusRow)
-				displayGui()
-				curses.endwin()
-				sys.exit(0)
+				switchToMonitor()
 			time.sleep(0.1)
 
 	except (SystemExit, Exception):
@@ -118,6 +112,11 @@ def interactiveLoop():
 	except (KeyboardInterrupt):
 		curses.endwin()
 		sys.exit(0)
+
+def switchToMonitor():
+	displayGui()
+	curses.endwin()
+	sys.exit(0)
 
 def drawScreen(count, focusRow):
 	row = 1
@@ -273,6 +272,31 @@ def build(focusRow):
 		base64string = base64.encodestring('%s:%s' % (sys.argv[1], sys.argv[2])).replace('\n', '')
 		request.add_header("Authorization", "Basic %s" % base64string)
 		urllib2.urlopen(request, data="");
+
+def findNextRowToFocus(oldRow):
+
+	if links.keys().index(oldRow) == len(links.keys())-1:
+		return links.keys()[0]
+
+	returnNext = 0
+
+	for key in links.keys():
+		if returnNext == 1:
+			return key
+		if oldRow == key:
+			returnNext = 1
+
+def findPrevRowToFocus(oldRow):
+
+	if links.keys().index(oldRow) == 0:
+		return links.keys()[len(links.keys())-1]
+
+	prevValue = 0
+
+	for key in links.keys():
+		if oldRow == key:
+			return prevValue
+		prevValue = key
 
 def adjustColor(colorCode, row, focusRow):
 
