@@ -9,6 +9,7 @@ CJenkins is a jenkins GUI in the terminal. It displays jobs and their status. Yo
 
 #### Commands:
 * `ctrl + c` to enter interactive mode
+
 ##### When in interactive mode
 * `ctrl + c` to quit
 * `w` to move up
