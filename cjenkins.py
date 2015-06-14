@@ -105,18 +105,16 @@ def interactiveLoop():
 				switchToMonitor()
 			time.sleep(0.1)
 
-	except (SystemExit, Exception):
+	except (Exception):
 		curses.endwin()
 		print traceback.format_exc()
 		sys.exit(0)
-	except (KeyboardInterrupt):
+	except (SystemExit, KeyboardInterrupt):
 		curses.endwin()
 		sys.exit(0)
 
 def switchToMonitor():
 	displayGui()
-	curses.endwin()
-	sys.exit(0)
 
 def drawScreen(count, focusRow):
 	row = 1
