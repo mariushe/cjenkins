@@ -9,6 +9,7 @@ import base64
 import sys
 import time
 import traceback
+import argparse
 
 def createHeader():
 
@@ -31,16 +32,27 @@ def init():
 
 	global myscreen, x, y, links
 
+	parseArgs()
+
 	myscreen = curses.initscr()
 	myscreen.border(0)
-	curses.curs_set(0);
+	curses.curs_set(0)
 	curses.noecho()
 
 	links = {}
 
-	y,x = myscreen.getmaxyx();
+	y,x = myscreen.getmaxyx()
 
-	defineColors();
+	defineColors()
+
+
+def parseArgs():
+	global args
+	parser = argparse.ArgumentParser(prog='CJenkins')
+	parser.add_argument('-u', nargs='?', help='username')
+	parser.add_argument('-p', nargs='?', help='password')
+	parser.add_argument('-l', nargs='*', help='links', required=True)
+	args = parser.parse_args()
 
 def defineColors():
 
@@ -100,7 +112,7 @@ def interactiveLoop():
 				drawScreen(1,focusRow)
 			if c == ord('m'):
 				switchToMonitor()
-			if c == ord('b'):
+			if c == ord('b') and args.u != None and args.p != None:
 				build(focusRow)
 				switchToMonitor()
 			time.sleep(0.1)
@@ -122,23 +134,14 @@ def drawScreen(count, focusRow):
 	createHeader()
 	noticeInteractiveMode(focusRow)
 
-	argumentNr = 3
-
-	while argumentNr < len(sys.argv):
-
-		row = readData(count, argumentNr, row, focusRow)
-
-		if argumentNr < (len(sys.argv)-1):
-			myscreen.addstr(row, 1, "-" * (x-2))
-			row += 1
-
-		argumentNr += 1
+	for link in args.l:
+		row = readData(count, link, row, focusRow)
 
 	myscreen.refresh()
 
-def readData(count, argumentNr, row, focusRow):
+def readData(count, link, row, focusRow):
 
-	data = eval(urllib2.urlopen(str(sys.argv[argumentNr]) + "/api/python?depth=1&pretty=true").read());
+	data = eval(urllib2.urlopen(link + "/api/python?depth=1&pretty=true").read());
 
 	row += 1
 
@@ -229,7 +232,11 @@ def addQuitInstructions(y, focusRow):
 		myscreen.addstr(y-2, 2, "Press ctrl+C to interact!")
 	else:
 		myscreen.addstr(y-2, 1, " " * (x-2), curses.color_pair(8))
-		myscreen.addstr(y-2, 2, "ctrl+C: quit | w: up | s: down | b: build | m: monitor",curses.color_pair(8))
+
+		if args.u != None and args.p != None:
+			myscreen.addstr(y-2, 2, "ctrl+C: quit | w: up | s: down | b: build | m: monitor",curses.color_pair(8))
+		else:
+			myscreen.addstr(y-2, 2, "ctrl+C: quit | m: monitor | build: requires auth",curses.color_pair(8))
 
 def windowToSmallToWriteIn(row):
 
@@ -267,7 +274,7 @@ def getColorCode(color):
 def build(focusRow):
 	if focusRow in links.keys():
 		request = urllib2.Request(links[focusRow] + "/build/")
-		base64string = base64.encodestring('%s:%s' % (sys.argv[1], sys.argv[2])).replace('\n', '')
+		base64string = base64.encodestring('%s:%s' % (args.u, args.p)).replace('\n', '')
 		request.add_header("Authorization", "Basic %s" % base64string)
 		urllib2.urlopen(request, data="");
 
@@ -303,10 +310,6 @@ def adjustColor(colorCode, row, focusRow):
 	else:
 		return colorCode
 
-if len(sys.argv) < 4:
-	print("ERROR: Wrong nr of parameter")
-	print("  Usage: ./cjenkins.py <username> <password> <pathToJenkins>")
-	exit(1)
 
 init();
 

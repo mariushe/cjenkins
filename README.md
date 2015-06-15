@@ -5,7 +5,9 @@ CJenkins is a jenkins GUI in the terminal. It displays jobs and their status. Yo
 ![](https://raw.github.com/mariushe/cjenkins/master/cjenkins.png)
 
 #### How run:
-`python cjenkins <username> <password> <jenkins address>`
+`python cjenkins -u <username> -p <password> -l <jenkins 1 address> .. <jenkins n address>`
+
+You can use the monitor without giving username and password. However, they are required to start builds.
 
 #### Commands:
 * `ctrl + c` to enter interactive mode
