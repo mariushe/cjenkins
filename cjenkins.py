@@ -141,7 +141,7 @@ def drawScreen(count, focusRow):
 
 def readData(count, link, row, focusRow):
 
-	data = eval(urllib2.urlopen(link + "/api/python?depth=1&pretty=true").read());
+	data = getJobs(link);
 
 	row += 1
 
@@ -277,6 +277,16 @@ def build(focusRow):
 		base64string = base64.encodestring('%s:%s' % (args.u, args.p)).replace('\n', '')
 		request.add_header("Authorization", "Basic %s" % base64string)
 		urllib2.urlopen(request, data="");
+
+def getJobs(link):
+	if args.u != None and args.p != None:
+		request = urllib2.Request(link + "/api/python?depth=1&pretty=true")
+		base64string = base64.encodestring('%s:%s' % (args.u, args.p)).replace('\n', '')
+		request.add_header("Authorization", "Basic %s" % base64string)
+		return eval(urllib2.urlopen(request).read());
+	else:
+		return eval(urllib2.urlopen(link + "/api/python?depth=1&pretty=true").read());
+
 
 def findNextRowToFocus(oldRow):
 
