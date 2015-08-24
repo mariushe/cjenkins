@@ -4,27 +4,44 @@
 # Author: Marius Herring
 
 import curses
-import urllib2
 import base64
 import sys
 import time
 import traceback
 import argparse
 
+if (sys.version_info > (3,0)):
+	from urllib.request import urlopen
+	from urllib.request import Request
+else:
+	from urllib2 import urlopen
+	from urllib2 import Request
+
 def createHeader():
 
 	header = "Curses Jenkins"
 	headerPos = (x/2) - 7
 
+	if (sys.version_info > (3,0)):
+		headerPos = round(headerPost)
+
+
 	myscreen.addstr(0, headerPos, header,curses.color_pair(1))
 
 def noticeInteractiveMode(focusRow):
 
+	width = x-2
+	if (sys.version_info > (3,0)):
+		width = round(width)
+
 	if focusRow == -1:
-		myscreen.addstr(1, 1, " " * (x-2), curses.color_pair(1))
+		myscreen.addstr(1, 1, " " * width, curses.color_pair(1))
 	else:
 		headerPos = (x/2) - 8
-		myscreen.addstr(1, 1, " " * (x-2), curses.color_pair(7))
+		if (sys.version_info > (3,0)):
+			headerPos = round(headerPost)
+
+		myscreen.addstr(1, 1, " " * width, curses.color_pair(7))
 		myscreen.addstr(1, headerPos, "Interactive mode",curses.color_pair(7))
 
 
@@ -91,7 +108,7 @@ def displayGui():
 
 	except (SystemExit, Exception):
 		curses.endwin()
-		print traceback.format_exc()
+		print(traceback.format_exc())
 		sys.exit(0)
 	except (KeyboardInterrupt):
 		interactiveLoop()
@@ -119,7 +136,7 @@ def interactiveLoop():
 
 	except (Exception):
 		curses.endwin()
-		print traceback.format_exc()
+		print(traceback.format_exc())
 		sys.exit(0)
 	except (SystemExit, KeyboardInterrupt):
 		curses.endwin()
@@ -273,24 +290,24 @@ def getColorCode(color):
 
 def build(focusRow):
 	if focusRow in links.keys():
-		request = urllib2.Request(links[focusRow] + "/build/")
-		base64string = base64.encodestring('%s:%s' % (args.u, args.p)).replace('\n', '')
+		request = Request(links[focusRow] + "/build/")
+		base64string = base64.encodestring(('%s:%s' % (args.u, args.p)).encode()).decode().replace('\n', '')
 		request.add_header("Authorization", "Basic %s" % base64string)
-		urllib2.urlopen(request, data="");
+		urlopen(request, data=b"");
 
 def getJobs(link):
 	if args.u != None and args.p != None:
-		request = urllib2.Request(link + "/api/python?depth=1&pretty=true")
-		base64string = base64.encodestring('%s:%s' % (args.u, args.p)).replace('\n', '')
+		request = Request(link + "/api/python?depth=1&pretty=true")
+		base64string = base64.encodestring(('%s:%s' % (args.u, args.p)).encode()).decode().replace('\n', '')
 		request.add_header("Authorization", "Basic %s" % base64string)
-		return eval(urllib2.urlopen(request).read());
+		return eval(urlopen(request).read());
 	else:
-		return eval(urllib2.urlopen(link + "/api/python?depth=1&pretty=true").read());
+		return eval(urlopen(link + "/api/python?depth=1&pretty=true").read());
 
 
 def findNextRowToFocus(oldRow):
 
-	if links.keys().index(oldRow) == len(links.keys())-1:
+	if list(links).index(oldRow) == len(links.keys())-1:
 		return links.keys()[0]
 
 	returnNext = 0
@@ -303,7 +320,7 @@ def findNextRowToFocus(oldRow):
 
 def findPrevRowToFocus(oldRow):
 
-	if links.keys().index(oldRow) == 0:
+	if list(links).index(oldRow) == 0:
 		return links.keys()[len(links.keys())-1]
 
 	prevValue = 0
