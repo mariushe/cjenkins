@@ -23,7 +23,7 @@ def createHeader():
 	headerPos = (x/2) - 7
 
 	if (sys.version_info > (3,0)):
-		headerPos = round(headerPost)
+		headerPos = round(headerPos)
 
 
 	myscreen.addstr(0, headerPos, header,curses.color_pair(1))
@@ -39,7 +39,7 @@ def noticeInteractiveMode(focusRow):
 	else:
 		headerPos = (x/2) - 8
 		if (sys.version_info > (3,0)):
-			headerPos = round(headerPost)
+			headerPos = round(headerPos)
 
 		myscreen.addstr(1, 1, " " * width, curses.color_pair(7))
 		myscreen.addstr(1, headerPos, "Interactive mode",curses.color_pair(7))
