@@ -27,8 +27,8 @@ Here is an example:
 #### Update:
 Now you can add several jenkins' as arguments. That way you can get all your jenkins' in one window!
 
-#####CJenkins' interactive mode:
+##### CJenkins' interactive mode:
 ![](https://raw.github.com/mariushe/cjenkins/master/interactivemode.png)
 
-#####CJenkins with several jenkins':
+##### CJenkins with several jenkins':
 ![](https://raw.github.com/mariushe/cjenkins/master/cjenkinsWithSeveralJenkins.png)
